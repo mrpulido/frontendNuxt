@@ -115,7 +115,7 @@ const handleSubmit = async () => {
                 sexo: form.value.sexo,
                 edad: form.value.edad,
                 asignatura: form.value.asignatura,
-                facultad: form.value.facultad
+                facultadId: form.value.facultad
             },
         });
 
