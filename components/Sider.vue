@@ -62,7 +62,7 @@
           </NuxtLink>
         </li>
         <li>
-          <NuxtLink to=""
+          <NuxtLink to="/encuesta"
             class="text-black hover:text-blue-600 text-[15px] flex items-center hover:bg-white rounded px-4 py-3 transition-all">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
               stroke="currentColor" class="w-7 h-7 mr-4">

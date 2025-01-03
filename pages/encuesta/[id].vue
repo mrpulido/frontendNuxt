@@ -1,0 +1,89 @@
+<template>
+    <div class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-md w-full space-y-8">
+            <div>
+                <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
+                    {{ show ? 'Mostrar Encuesta' : 'Editar Encuesta' }}
+                </h2>
+            </div>
+            <form class="mt-8 space-y-6" @submit.prevent="handleSubmit">
+                <div class="rounded-md shadow-sm -space-y-px">
+                    <div>
+                        <label for="nombre" class="sr-only">{{ show ? 'Mostrando Nombre' : 'Nombre' }}</label>
+                        <input id="nombre" name="nombre" type="text" required v-model="form.nombre" :disabled="show"
+                            class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                            placeholder="Nombre de la encuesta">
+                    </div>
+
+                </div>
+
+                <div class="flex justify-between space-x-6">
+                    <button v-if="!show" type="submit"
+                        class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        Editar
+                    </button>
+                    <button type="button"
+                        class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-700"
+                        @click="cancelar">
+                        {{ show ? 'Aceptar' : 'Cancelar' }}
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</template>
+
+<script setup>
+import { ref, onMounted } from 'vue'
+import { useToast } from 'vue-toastification'
+import { useRouter, useRoute } from 'vue-router'
+
+const config = useRuntimeConfig();
+const router = useRouter();
+const route = useRoute();
+const toast = useToast();
+const form = ref({
+    id: '',
+    nombre: ''
+});
+
+const show = ref(route.query.show === 'true');
+
+// Función para cargar los datos de la encuesta
+const cargarEncuesta = async () => {
+    try {
+        const { id } = route.params;
+        const response = await $fetch(`${config.public.backend_url}/encuesta/${id}`);
+        form.value = response;
+    } catch (error) {
+        toast.error(`Error al cargar la encuesta: ${error.message}`);
+    }
+};
+
+onMounted(() => {
+    cargarEncuesta();
+});
+
+const handleSubmit = async () => {
+    try {
+        const response = await $fetch(`${config.public.backend_url}/encuesta/update/${form.value.id}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: {
+                nombre: form.value.nombre,
+            },
+        });
+
+        toast.success("Encuesta editada exitosamente.");
+        router.push('/encuesta');
+    } catch (error) {
+        toast.error(`Error al editar la encuesta: ${error.message}`);
+    }
+};
+
+const cancelar = () => {
+    router.push('/encuesta');
+};
+</script>
