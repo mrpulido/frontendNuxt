@@ -99,8 +99,10 @@ const cargarProfesor = async () => {
         const response = await $fetch(`${config.public.backend_url}/profesor/${id}`);
         form.value = response;
         // Asignar el nombre de la facultad
-        const facultad = facultades.value.find(f => f.id === form.value.facultad);
-        form.value.facultadNombre = facultad ? facultad.nombre : 'No asignada';
+        if (facultades.value.length > 0) {
+            const facultad = facultades.value.find(f => f.id === form.value.facultad);
+            form.value.facultadNombre = facultad ? facultad.nombre : 'No asignada';
+        }
     } catch (error) {
         toast.error(`Error al cargar el profesor: ${error.message}`);
     }
@@ -125,8 +127,9 @@ const fetchFacultades = async () => {
     }
 };
 
-onMounted(() => {
-    fetchFacultades().then(cargarProfesor); // Asegúrate de cargar las facultades antes de cargar el profesor
+onMounted(async () => {
+    await fetchFacultades(); // Asegúrate de que las facultades se carguen primero
+    await cargarProfesor(); // Luego carga el profesor
 });
 
 const handleSubmit = async () => {
