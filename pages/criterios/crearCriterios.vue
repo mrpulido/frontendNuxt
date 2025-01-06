@@ -3,7 +3,7 @@
         <div class="max-w-md w-full space-y-8">
             <div>
                 <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
-                    Agregar Nueva Encuesta
+                    Agregar Nuevo Criterio
                 </h2>
             </div>
             <form class="mt-8 space-y-6" @submit.prevent="handleSubmit">
@@ -12,7 +12,17 @@
                         <label for="nombre" class="sr-only">Nombre</label>
                         <input id="nombre" name="nombre" type="text" required v-model="form.nombre"
                             class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                            placeholder="Nombre de la encuesta">
+                            placeholder="Nombre del criterio">
+                    </div>
+                    <div>
+                        <label for="encuesta" class="sr-only">Encuesta</label>
+                        <select id="encuesta" name="encuesta" required v-model="form.encuesta"
+                            class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm">
+                            <option value="" disabled>Seleccione una encuesta</option>
+                            <option v-for="encuesta in encuestas" :key="encuesta.id" :value="encuesta.id">
+                                {{ encuesta.nombre }}
+                            </option>
+                        </select>
                     </div>
                 </div>
 
@@ -33,54 +43,76 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-
 import { useToast } from 'vue-toastification'
 
-// Agregar el toast
 const toast = useToast()
-// Configuración en tiempo de ejecución
 const config = useRuntimeConfig();
 const router = useRouter()
 
+const encuestas = ref([]);
+
 const form = ref({
+    id: '',
     nombre: '',
-    usuarioId: 4,
-})
+    encuesta: ''
+});
+
+const fetchEncuestas = async () => {
+    try {
+        const response = await $fetch(`${config.public.backend_url}/encuesta`, {
+            method: "GET",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include'
+        });
+
+        encuestas.value = response;
+    } catch (error) {
+        console.error('Error al obtener las encuestas:', error);
+        toast.error('Error al obtener las encuestas.');
+    }
+};
+
+onMounted(() => {
+    fetchEncuestas();
+});
 
 const handleSubmit = async () => {
-    const toast = useToast(); // Inicializa el uso de toast  
+    const toast = useToast(); // Inicializa el uso de toast  
     try {
-        const response = await $fetch(`${config.public.backend_url}/encuesta/create`, {
+        const response = await $fetch(`${config.public.backend_url}/criterios/create`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
             body: {
                 nombre: form.value.nombre,
-                usuarioId: form.value.usuarioId,
+                encuestaId: form.value.encuesta
             },
         });
 
-        // Mensaje de éxito con vue-toastification  
-        toast.success("Encuesta agregada exitosamente.");
+        // Mensaje de éxito con vue-toastification  
+        toast.success("Criterio agregado exitosamente.");
 
-        // Reiniciar el formulario después de enviar  
+        // Reiniciar el formulario después de enviar  
         form.value = {
             nombre: '',
-            usuarioId: 4
+            encuesta: ''
         };
 
-        // Redirigir a la página anterior  
-        router.push('/encuesta'); // Cambia '/encuesta' por la ruta que desees  
+        // Redirigir a la página anterior  
+        router.push('/criterios'); // Cambia '/criterio' por la ruta que desees  
     } catch (error) {
-        // Mensaje de error con vue-toastification  
-        toast.error(`Error al agregar la encuesta: ${error.message}`);
+        // Mensaje de error con vue-toastification  
+        toast.error(`Error al agregar el criterio: ${error.message}`);
     }
 };
 
 const cancelar = () => {
-    router.push('/encuesta'); // Cambia '/encuesta' por la ruta que desees
+    router.push('/criterios'); // Cambia '/criterio' por la ruta que desees
 }
 </script>

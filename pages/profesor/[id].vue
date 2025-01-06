@@ -6,6 +6,11 @@
                     {{ show ? 'Mostrar Profesor' : 'Editar Profesor' }}
                 </h2>
             </div>
+            <!-- Mostrar la imagen del profesor si existe -->
+            <div v-if="form.imagen" class="flex justify-center mb-4">
+                <img :src="`${config.public.backend_url}/${form.imagen}`" alt="Imagen del Profesor"
+                    class="w-32 h-32 object-cover rounded-full">
+            </div>
             <form class="mt-8 space-y-6" @submit.prevent="show ? cancelar() : handleSubmit()">
                 <div class="rounded-md shadow-sm -space-y-px">
                     <div>
@@ -50,6 +55,12 @@
                             </option>
                         </select>
                     </div>
+                    <div v-if="!show">
+                        <label for="imagen" class="sr-only">Nueva Imagen</label>
+                        <input id="imagen" name="imagen" type="file" @change="handleFileChange"
+                            class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                            placeholder="Nueva Imagen del Profesor">
+                    </div>
                 </div>
 
                 <div class="flex justify-between space-x-6">
@@ -88,7 +99,8 @@ const form = ref({
     edad: '',
     asignatura: '',
     facultad: '',
-    facultadNombre: '' // Añadir para mostrar el nombre de la facultad
+    facultadNombre: '',
+    imagen: '' // Asegúrate de incluir la imagen en el formulario
 });
 
 const show = ref(route.query.show === 'true');
@@ -131,20 +143,30 @@ onMounted(async () => {
     await cargarProfesor(); // Luego carga el profesor
 });
 
+const handleFileChange = (event) => {
+    form.value.imagen = event.target.files[0];
+};
+
 const handleSubmit = async () => {
     try {
+        const formData = new FormData();
+        formData.append('nombre', form.value.nombre);
+        formData.append('sexo', form.value.sexo);
+        formData.append('edad', form.value.edad);
+        formData.append('asignatura', form.value.asignatura);
+        formData.append('facultadId', form.value.facultad);
+        if (form.value.imagen) {
+            formData.append('imagen', form.value.imagen);
+        }
+
+        // Log para verificar los datos enviados
+        for (let [key, value] of formData.entries()) {
+            console.log(key, value);
+        }
+
         await $fetch(`${config.public.backend_url}/profesor/update/${form.value.id}`, {
             method: "PUT",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: {
-                nombre: form.value.nombre,
-                sexo: form.value.sexo,
-                edad: form.value.edad,
-                asignatura: form.value.asignatura,
-                facultadId: form.value.facultad // Asegúrate de enviar el ID de la facultad
-            },
+            body: formData,
         });
 
         toast.success("Profesor editado exitosamente.");

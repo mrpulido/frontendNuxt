@@ -42,6 +42,12 @@
                             </option>
                         </select>
                     </div>
+                    <div>
+                        <label for="imagen" class="sr-only">Imagen</label>
+                        <input id="imagen" name="imagen" type="file" @change="handleFileChange"
+                            class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                            placeholder="Imagen del profesor">
+                    </div>
                 </div>
 
                 <div class="flex justify-between space-x-6">
@@ -77,7 +83,8 @@ const form = ref({
     sexo: '',
     edad: '',
     asignatura: '',
-    facultad: ''
+    facultad: '',
+    imagen: null
 });
 
 const fetchFacultades = async () => {
@@ -102,21 +109,26 @@ onMounted(() => {
     fetchFacultades();
 });
 
+const handleFileChange = (event) => {
+    form.value.imagen = event.target.files[0];
+};
+
 const handleSubmit = async () => {
     const toast = useToast(); // Inicializa el uso de toast  
     try {
+        const formData = new FormData();
+        formData.append('nombre', form.value.nombre);
+        formData.append('sexo', form.value.sexo);
+        formData.append('edad', form.value.edad);
+        formData.append('asignatura', form.value.asignatura);
+        formData.append('facultadId', form.value.facultad);
+        if (form.value.imagen) {
+            formData.append('imagen', form.value.imagen);
+        }
+
         const response = await $fetch(`${config.public.backend_url}/profesor/create`, {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: {
-                nombre: form.value.nombre,
-                sexo: form.value.sexo,
-                edad: form.value.edad,
-                asignatura: form.value.asignatura,
-                facultadId: form.value.facultad
-            },
+            body: formData,
         });
 
         // Mensaje de éxito con vue-toastification  
@@ -128,7 +140,8 @@ const handleSubmit = async () => {
             sexo: '',
             edad: '',
             asignatura: '',
-            facultad: ''
+            facultad: '',
+            imagen: null
         };
 
         // Redirigir a la página anterior  
