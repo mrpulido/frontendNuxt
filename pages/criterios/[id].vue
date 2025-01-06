@@ -77,9 +77,11 @@ const cargarCriterio = async () => {
         const { id } = route.params;
         const response = await $fetch(`${config.public.backend_url}/criterios/${id}`);
         form.value = response;
+
+        console.log(response)
         // Asignar el nombre de la encuesta directamente desde la respuesta
-        form.value.encuestaNombre = response.encuesta ? response.encuesta.nombre : null;
-        form.value.encuesta = response.encuesta ? response.encuesta.id : ''; // Asegúrate de que el ID de la encuesta esté asignado
+        form.value.encuestaNombre = response.encuestum.nombre
+        form.value.encuesta = response.encuestaId// Asegúrate de que el ID de la encuesta esté asignado
     } catch (error) {
         toast.error(`Error al cargar el criterio: ${error.message}`);
     }
