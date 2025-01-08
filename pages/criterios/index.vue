@@ -29,7 +29,7 @@ const config = useRuntimeConfig();
 const criterios = ref([]);
 const tableHeaders = ref([
     { label: "Nombre", key: "nombre" },
-    //{ label: "Encuesta", key: "encuesta" },
+    { label: "Encuesta", key: "encuestum.nombre" },
 ]);
 
 // Variable para controlar la visibilidad del modal
@@ -64,8 +64,10 @@ const fetchCriterios = async () => {
             }
         );
 
-        criterios.value = response;
+        console.log('Respuesta del backend:', response); // Imprime la respuesta para verificar su estructura
 
+        criterios.value = response
+        console.log(criterios)
     } catch (error) {
         console.error('Error al obtener los criterios:', error);
         const errorMessage = error.response?._data?.message || 'Ha ocurrido un error inesperado';

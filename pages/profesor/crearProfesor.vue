@@ -67,7 +67,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { useToast } from 'vue-toastification'
 
@@ -87,6 +87,45 @@ const form = ref({
     imagen: null
 });
 
+// Cargar datos del localStorage al montar el componente
+onMounted(() => {
+    const savedForm = localStorage.getItem('crearProfesorForm');
+    if (savedForm) {
+        const parsedForm = JSON.parse(savedForm);
+        form.value = parsedForm;
+
+        // Convertir la imagen de base64 a un objeto File si existe
+        if (parsedForm.imagen) {
+            const byteString = atob(parsedForm.imagen.split(',')[1]);
+            const mimeString = parsedForm.imagen.split(',')[0].split(':')[1].split(';')[0];
+            const ab = new ArrayBuffer(byteString.length);
+            const ia = new Uint8Array(ab);
+            for (let i = 0; i < byteString.length; i++) {
+                ia[i] = byteString.charCodeAt(i);
+            }
+            form.value.imagen = new Blob([ab], { type: mimeString });
+        }
+    }
+    fetchFacultades();
+});
+
+// Guardar datos en localStorage al cambiar el formulario
+watch(form, (newForm) => {
+    const formCopy = { ...newForm };
+
+    // Convertir la imagen a base64 antes de guardar
+    if (formCopy.imagen instanceof File) {
+        const reader = new FileReader();
+        reader.onload = () => {
+            formCopy.imagen = reader.result;
+            localStorage.setItem('crearProfesorForm', JSON.stringify(formCopy));
+        };
+        reader.readAsDataURL(formCopy.imagen);
+    } else {
+        localStorage.setItem('crearProfesorForm', JSON.stringify(formCopy));
+    }
+}, { deep: true });
+
 const fetchFacultades = async () => {
     try {
         const response = await $fetch(`${config.public.backend_url}/facultad`, {
@@ -104,10 +143,6 @@ const fetchFacultades = async () => {
         toast.error('Error al obtener las facultades.');
     }
 };
-
-onMounted(() => {
-    fetchFacultades();
-});
 
 const handleFileChange = (event) => {
     form.value.imagen = event.target.files[0];
@@ -144,6 +179,9 @@ const handleSubmit = async () => {
             imagen: null
         };
 
+        // Eliminar los datos guardados en localStorage
+        localStorage.removeItem('crearProfesorForm');
+
         // Redirigir a la página anterior  
         router.push('/profesor'); // Cambia '/profesor' por la ruta que desees  
     } catch (error) {
@@ -153,6 +191,7 @@ const handleSubmit = async () => {
 };
 
 const cancelar = () => {
+    localStorage.removeItem('crearProfesorForm'); // Elimina los datos guardados
     router.push('/profesor'); // Cambia '/facultad' por la ruta que desees
 }
 </script>

@@ -15,7 +15,7 @@
                 <tr v-for="(row, rowIndex) in rows" :key="rowIndex"
                     class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
                     <td v-for="(header, colIndex) in headers" :key="colIndex" class="px-6 py-4 text-center">
-                        {{ row[header.key] }}
+                        {{ getNestedValue(row, header.key) }}
                     </td>
                     <td class="px-6 py-4 text-center">
                         <NuxtLink to="" class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
@@ -72,5 +72,10 @@ const props = defineProps({
             console.log('Eliminar por defecto', row);
         }
     }
-})
+});
+
+// Función auxiliar para obtener valores anidados
+function getNestedValue(obj, path) {
+    return path.split('.').reduce((acc, part) => acc && acc[part], obj);
+}
 </script>

@@ -39,7 +39,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import { useRouter } from 'vue-router'
 
 import { useToast } from 'vue-toastification'
@@ -54,6 +54,19 @@ const form = ref({
     nombre: '',
     responsable: ''
 })
+
+// Cargar datos del localStorage al montar el componente
+onMounted(() => {
+    const savedForm = localStorage.getItem('crearFacultadForm');
+    if (savedForm) {
+        form.value = JSON.parse(savedForm);
+    }
+});
+
+// Guardar datos en localStorage al cambiar el formulario
+watch(form, (newForm) => {
+    localStorage.setItem('crearFacultadForm', JSON.stringify(newForm));
+}, { deep: true });
 
 const handleSubmit = async () => {
     const toast = useToast(); // Inicializa el uso de toast  
@@ -87,6 +100,7 @@ const handleSubmit = async () => {
 };
 
 const cancelar = () => {
+    localStorage.removeItem('crearFacultadForm'); // Elimina los datos guardados
     router.push('/facultad'); // Cambia '/facultad' por la ruta que desees
 }
 </script>

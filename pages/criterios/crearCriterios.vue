@@ -43,7 +43,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { useToast } from 'vue-toastification'
 
@@ -58,6 +58,20 @@ const form = ref({
     nombre: '',
     encuesta: ''
 });
+
+// Cargar datos del localStorage al montar el componente
+onMounted(() => {
+    const savedForm = localStorage.getItem('crearCriteriosForm');
+    if (savedForm) {
+        form.value = JSON.parse(savedForm);
+    }
+    fetchEncuestas();
+});
+
+// Guardar datos en localStorage al cambiar el formulario
+watch(form, (newForm) => {
+    localStorage.setItem('crearCriteriosForm', JSON.stringify(newForm));
+}, { deep: true });
 
 const fetchEncuestas = async () => {
     try {
@@ -76,10 +90,6 @@ const fetchEncuestas = async () => {
         toast.error('Error al obtener las encuestas.');
     }
 };
-
-onMounted(() => {
-    fetchEncuestas();
-});
 
 const handleSubmit = async () => {
     const toast = useToast(); // Inicializa el uso de toast  
@@ -104,6 +114,9 @@ const handleSubmit = async () => {
             encuesta: ''
         };
 
+        // Eliminar datos guardados en localStorage
+        localStorage.removeItem('crearCriteriosForm');
+
         // Redirigir a la página anterior  
         router.push('/criterios'); // Cambia '/criterio' por la ruta que desees  
     } catch (error) {
@@ -113,6 +126,7 @@ const handleSubmit = async () => {
 };
 
 const cancelar = () => {
+    localStorage.removeItem('crearCriteriosForm'); // Elimina los datos guardados
     router.push('/criterios'); // Cambia '/criterio' por la ruta que desees
 }
 </script>

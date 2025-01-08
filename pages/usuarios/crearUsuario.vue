@@ -46,7 +46,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import { useRouter } from 'vue-router'
 
 import { useToast } from 'vue-toastification'
@@ -63,6 +63,19 @@ const form = ref({
     rol: ''
 })
 
+// Cargar datos del localStorage al montar el componente
+onMounted(() => {
+    const savedForm = localStorage.getItem('crearUsuarioForm');
+    if (savedForm) {
+        form.value = JSON.parse(savedForm);
+    }
+});
+
+// Guardar datos en localStorage al cambiar el formulario
+watch(form, (newForm) => {
+    localStorage.setItem('crearUsuarioForm', JSON.stringify(newForm));
+}, { deep: true });
+
 const handleSubmit = async () => {
     const toast = useToast(); // Inicializa el uso de toast  
     try {
@@ -73,7 +86,7 @@ const handleSubmit = async () => {
             },
             body: {
                 nombre_usuario: form.value.nombre_usuario,
-                contrasena: form.value.nombre_usuario,
+                contrasena: form.value.contrasena,
                 rol: form.value.rol,
             },
         });
@@ -88,8 +101,11 @@ const handleSubmit = async () => {
             rol: ''
         };
 
+        // Limpiar el localStorage después de enviar
+        localStorage.removeItem('crearUsuarioForm');
+
         // Redirigir a la página anterior  
-        router.push('/usuarios'); // Cambia '/usuario' por la ruta que desees  
+        router.push('/usuarios'); // Cambia '/usuarios' por la ruta que desees  
     } catch (error) {
         // Mensaje de error con vue-toastification  
         toast.error(`Error al agregar el usuario: ${error.message}`);
@@ -97,6 +113,7 @@ const handleSubmit = async () => {
 };
 
 const cancelar = () => {
-    router.push('/usuarios'); // Cambia '/usuario' por la ruta que desees
+    localStorage.removeItem('crearUsuarioForm'); // Elimina los datos guardados
+    router.push('/usuarios'); // Cambia '/usuarios' por la ruta que desees
 }
 </script>

@@ -53,7 +53,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import { useToast } from 'vue-toastification'
 import { useRouter, useRoute } from 'vue-router'
 
@@ -82,8 +82,18 @@ const cargarUsuario = async () => {
 };
 
 onMounted(() => {
-    cargarUsuario();
+    const savedForm = localStorage.getItem('usuarioForm');
+    if (savedForm) {
+        form.value = JSON.parse(savedForm);
+    } else {
+        cargarUsuario();
+    }
 });
+
+// Guardar datos en localStorage al cambiar el formulario
+watch(form, (newForm) => {
+    localStorage.setItem('usuarioForm', JSON.stringify(newForm));
+}, { deep: true });
 
 const handleSubmit = async () => {
     try {

@@ -14,7 +14,19 @@
                             class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                             placeholder="Nombre de la encuesta">
                     </div>
-
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Profesores</label>
+                        <div class="mt-2 space-y-2">
+                            <div v-for="profesor in profesores" :key="profesor.id" class="flex items-center">
+                                <input type="checkbox" :id="'profesor-' + profesor.id" :value="profesor.id"
+                                    v-model="form.profesores" :disabled="show"
+                                    class="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
+                                <label :for="'profesor-' + profesor.id" class="ml-2 block text-sm text-gray-900">
+                                    {{ profesor.nombre }}
+                                </label>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="flex justify-between space-x-6">
@@ -49,12 +61,20 @@ const form = ref({
 
 const show = ref(route.query.show === 'true');
 
+const profesor = ref('');
+const profesores = ref([]);
+
 // Función para cargar los datos de la encuesta
 const cargarEncuesta = async () => {
     try {
         const { id } = route.params;
         const response = await $fetch(`${config.public.backend_url}/encuesta/${id}`);
+        console.log('Respuesta del servidor:', response);
         form.value = response;
+        form.value.profesores = response.profesors.map(p => p.id);
+        profesor.value = response.profesors && response.profesors.length > 0
+            ? response.profesors.map(p => p.nombre).join(', ')
+            : 'No hay profesores asignados';
     } catch (error) {
         toast.error(`Error al cargar la encuesta: ${error.message}`);
     }
@@ -62,6 +82,19 @@ const cargarEncuesta = async () => {
 
 onMounted(() => {
     cargarEncuesta();
+});
+
+// Cargar la lista de profesores al montar el componente
+onMounted(async () => {
+    try {
+        const response = await fetch(`${config.public.backend_url}/profesor`);
+        if (!response.ok) {
+            throw new Error('Error al obtener la lista de profesores');
+        }
+        profesores.value = await response.json();
+    } catch (error) {
+        toast.error(`Error al cargar profesores: ${error.message}`);
+    }
 });
 
 const handleSubmit = async () => {
@@ -73,6 +106,7 @@ const handleSubmit = async () => {
             },
             body: {
                 nombre: form.value.nombre,
+                profesores: form.value.profesores
             },
         });
 

@@ -16,6 +16,20 @@
                     </div>
                 </div>
 
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Profesores</label>
+                    <div class="mt-2 space-y-2">
+                        <div v-for="profesor in profesores" :key="profesor.id" class="flex items-center">
+                            <input type="checkbox" :id="'profesor-' + profesor.id" :value="profesor.id"
+                                v-model="form.profesores"
+                                class="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
+                            <label :for="'profesor-' + profesor.id" class="ml-2 block text-sm text-gray-900">
+                                {{ profesor.nombre }}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="flex justify-between space-x-6">
                     <button type="submit"
                         class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
@@ -33,7 +47,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import { useRouter } from 'vue-router'
 
 import { useToast } from 'vue-toastification'
@@ -44,10 +58,39 @@ const toast = useToast()
 const config = useRuntimeConfig();
 const router = useRouter()
 
+const profesores = ref([]);
+
 const form = ref({
     nombre: '',
     usuarioId: 4,
-})
+    profesores: []
+});
+
+// Cargar datos del localStorage al montar el componente
+onMounted(() => {
+    const savedForm = localStorage.getItem('crearEncuestaForm');
+    if (savedForm) {
+        form.value = JSON.parse(savedForm);
+    }
+});
+
+// Guardar datos en localStorage al cambiar el formulario
+watch(form, (newForm) => {
+    localStorage.setItem('crearEncuestaForm', JSON.stringify(newForm));
+}, { deep: true });
+
+// Cargar la lista de profesores al montar el componente
+onMounted(async () => {
+    try {
+        const response = await fetch(`${config.public.backend_url}/profesor`);
+        if (!response.ok) {
+            throw new Error('Error al obtener la lista de profesores');
+        }
+        profesores.value = await response.json();
+    } catch (error) {
+        toast.error(`Error al cargar profesores: ${error.message}`);
+    }
+});
 
 const handleSubmit = async () => {
     const toast = useToast(); // Inicializa el uso de toast  
@@ -60,6 +103,7 @@ const handleSubmit = async () => {
             body: {
                 nombre: form.value.nombre,
                 usuarioId: form.value.usuarioId,
+                profesores: form.value.profesores
             },
         });
 
@@ -69,7 +113,8 @@ const handleSubmit = async () => {
         // Reiniciar el formulario después de enviar  
         form.value = {
             nombre: '',
-            usuarioId: 4
+            usuarioId: 4,
+            profesores: []
         };
 
         // Redirigir a la página anterior  
@@ -81,6 +126,8 @@ const handleSubmit = async () => {
 };
 
 const cancelar = () => {
+    localStorage.removeItem('crearEncuestaForm'); // Elimina los datos guardados
     router.push('/encuesta'); // Cambia '/encuesta' por la ruta que desees
+
 }
 </script>

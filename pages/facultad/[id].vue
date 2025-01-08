@@ -93,6 +93,8 @@ const handleSubmit = async () => {
 };
 
 const cancelar = () => {
+    localStorage.removeItem('editarFacultadForm');
+    form.value = { id: '', nombre: '', responsable: '' };
     router.push('/facultad');
 };
 </script>
