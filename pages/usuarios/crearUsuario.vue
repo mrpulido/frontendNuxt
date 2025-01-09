@@ -23,9 +23,12 @@
                     </div>
                     <div>
                         <label for="rol" class="sr-only">Rol</label>
-                        <input id="rol" name="rol" type="text" required v-model="form.rol"
-                            class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                            placeholder="Rol">
+                        <select id="rol" name="rol" required v-model="form.rol"
+                            class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm">
+                            <option value="" disabled>Selecciona un rol</option>
+                            <option value="Administrador">Administrador</option>
+                            <option value="Gestor">Gestor</option>
+                        </select>
                     </div>
                 </div>
 

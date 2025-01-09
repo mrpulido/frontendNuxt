@@ -30,9 +30,11 @@
                         <label for="rol" class="sr-only">
                             {{ show ? 'Mostrando Rol' : 'Rol' }}
                         </label>
-                        <input id="rol" name="rol" type="text" required v-model="form.rol" :disabled="show"
-                            class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                            placeholder="Rol">
+                        <select id="rol" name="rol" v-model="form.rol" :disabled="show"
+                            class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm">
+                            <option value="Administrador">Administrador</option>
+                            <option value="Gestor">Gestor</option>
+                        </select>
                     </div>
                 </div>
 
@@ -82,18 +84,8 @@ const cargarUsuario = async () => {
 };
 
 onMounted(() => {
-    const savedForm = localStorage.getItem('usuarioForm');
-    if (savedForm) {
-        form.value = JSON.parse(savedForm);
-    } else {
-        cargarUsuario();
-    }
+    cargarUsuario();
 });
-
-// Guardar datos en localStorage al cambiar el formulario
-watch(form, (newForm) => {
-    localStorage.setItem('usuarioForm', JSON.stringify(newForm));
-}, { deep: true });
 
 const handleSubmit = async () => {
     try {
