@@ -45,6 +45,7 @@ import { ref, onMounted } from 'vue'
 import { useToast } from 'vue-toastification'
 import { useRouter, useRoute } from 'vue-router'
 
+const { token } = useAuth()
 const config = useRuntimeConfig();
 const router = useRouter();
 const route = useRoute();
@@ -61,7 +62,12 @@ const show = ref(route.query.show === 'true');
 const cargarFacultad = async () => {
     try {
         const { id } = route.params;
-        const response = await $fetch(`${config.public.backend_url}/facultad/${id}`);
+        const response = await $fetch(`${config.public.backend_url}/facultad/${id}`, {
+            method: 'GET',
+            headers: {
+                'Authorization': token.value
+            }
+        });
         form.value = response;
     } catch (error) {
         toast.error(`Error al cargar la facultad: ${error.message}`);
@@ -78,6 +84,7 @@ const handleSubmit = async () => {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
+                'Authorization': token.value
             },
             body: {
                 nombre: form.value.nombre,

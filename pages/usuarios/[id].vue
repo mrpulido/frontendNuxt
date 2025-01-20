@@ -18,22 +18,13 @@
                             placeholder="Nombre de Usuario">
                     </div>
                     <div>
-                        <label for="contrasena" class="sr-only">
-                            {{ show ? 'Mostrando Contraseña' : 'Contraseña' }}
-                        </label>
-                        <input id="contrasena" name="contrasena" type="text" required v-model="form.contrasena"
-                            :disabled="show"
-                            class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                            placeholder="Contraseña">
-                    </div>
-                    <div>
                         <label for="rol" class="sr-only">
                             {{ show ? 'Mostrando Rol' : 'Rol' }}
                         </label>
                         <select id="rol" name="rol" v-model="form.rol" :disabled="show"
                             class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm">
-                            <option value="Administrador">Administrador</option>
-                            <option value="Gestor">Gestor</option>
+                            <option value="administrador">administrador</option>
+                            <option value="gestor">gestor</option>
                         </select>
                     </div>
                 </div>
@@ -59,6 +50,7 @@ import { ref, onMounted, watch } from 'vue'
 import { useToast } from 'vue-toastification'
 import { useRouter, useRoute } from 'vue-router'
 
+const { token } = useAuth()
 const config = useRuntimeConfig();
 const router = useRouter();
 const route = useRoute();
@@ -76,7 +68,12 @@ const show = ref(route.query.show === 'true');
 const cargarUsuario = async () => {
     try {
         const { id } = route.params;
-        const response = await $fetch(`${config.public.backend_url}/usuarios/${id}`);
+        const response = await $fetch(`${config.public.backend_url}/usuarios/${id}`, {
+            method: 'GET',
+            headers: {
+                'Authorization': token.value
+            }
+        });
         form.value = response;
     } catch (error) {
         toast.error(`Error al cargar el usuario: ${error.message}`);
@@ -93,6 +90,7 @@ const handleSubmit = async () => {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
+                'Authorization': token.value
             },
             body: {
                 nombre_usuario: form.value.nombre_usuario,

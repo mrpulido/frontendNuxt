@@ -50,6 +50,7 @@ import { ref, onMounted } from 'vue'
 import { useToast } from 'vue-toastification'
 import { useRouter, useRoute } from 'vue-router'
 
+const { token } = useAuth();
 const config = useRuntimeConfig();
 const router = useRouter();
 const route = useRoute();
@@ -68,8 +69,14 @@ const profesores = ref([]);
 const cargarEncuesta = async () => {
     try {
         const { id } = route.params;
-        const response = await $fetch(`${config.public.backend_url}/encuesta/${id}`);
-        console.log('Respuesta del servidor:', response);
+        const response = await $fetch(`${config.public.backend_url}/encuesta/${id}`, {
+            method: 'GET',
+            headers: {
+                'Authorization': token.value
+
+            },
+        });
+
         form.value = response;
         form.value.profesores = response.profesors.map(p => p.id);
         profesor.value = response.profesors && response.profesors.length > 0
@@ -87,11 +94,14 @@ onMounted(() => {
 // Cargar la lista de profesores al montar el componente
 onMounted(async () => {
     try {
-        const response = await fetch(`${config.public.backend_url}/profesor`);
-        if (!response.ok) {
-            throw new Error('Error al obtener la lista de profesores');
-        }
-        profesores.value = await response.json();
+        const response = await $fetch(`${config.public.backend_url}/profesor`, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Authorization': token.value
+            }
+        });
+        profesores.value = response;
     } catch (error) {
         toast.error(`Error al cargar profesores: ${error.message}`);
     }
@@ -103,6 +113,7 @@ const handleSubmit = async () => {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
+                'Authorization': token.value
             },
             body: {
                 nombre: form.value.nombre,

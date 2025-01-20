@@ -49,6 +49,7 @@
 <script setup>
 import { ref, onMounted, watch } from 'vue'
 import { useRouter } from 'vue-router'
+const { token, data } = useAuth()
 
 import { useToast } from 'vue-toastification'
 
@@ -62,7 +63,7 @@ const profesores = ref([]);
 
 const form = ref({
     nombre: '',
-    usuarioId: 4,
+    usuarioId: data.value.id,
     profesores: []
 });
 
@@ -82,7 +83,13 @@ watch(form, (newForm) => {
 // Cargar la lista de profesores al montar el componente
 onMounted(async () => {
     try {
-        const response = await fetch(`${config.public.backend_url}/profesor`);
+        const response = await fetch(`${config.public.backend_url}/profesor`, {
+            method: 'GET',
+            headers: {
+                'Authorization': token.value
+            },
+        }
+        );
         if (!response.ok) {
             throw new Error('Error al obtener la lista de profesores');
         }
@@ -99,6 +106,8 @@ const handleSubmit = async () => {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
+                'Authorization': token.value
+
             },
             body: {
                 nombre: form.value.nombre,
@@ -113,7 +122,7 @@ const handleSubmit = async () => {
         // Reiniciar el formulario después de enviar  
         form.value = {
             nombre: '',
-            usuarioId: 4,
+            usuarioId: data.value.id,
             profesores: []
         };
 

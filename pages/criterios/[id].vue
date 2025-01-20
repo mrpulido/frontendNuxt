@@ -55,6 +55,7 @@ import { ref, onMounted } from 'vue'
 import { useToast } from 'vue-toastification'
 import { useRouter, useRoute } from 'vue-router'
 
+const { token } = useAuth()
 const config = useRuntimeConfig();
 const router = useRouter();
 const route = useRoute();
@@ -75,7 +76,12 @@ const show = ref(route.query.show === 'true');
 const cargarCriterio = async () => {
     try {
         const { id } = route.params;
-        const response = await $fetch(`${config.public.backend_url}/criterios/${id}`);
+        const response = await $fetch(`${config.public.backend_url}/criterios/${id}`, {
+            method: 'GET',
+            headers: {
+                'Authorization': token.value
+            }
+        });
         form.value = response;
 
         console.log(response)
@@ -94,7 +100,8 @@ const fetchEncuestas = async () => {
             method: "GET",
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': token.value
             },
             credentials: 'include'
         });
@@ -117,6 +124,7 @@ const handleSubmit = async () => {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
+                'Authorization': token.value
             },
             body: {
                 nombre: form.value.nombre,

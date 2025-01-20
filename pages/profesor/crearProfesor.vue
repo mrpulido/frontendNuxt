@@ -73,6 +73,7 @@
 import { ref, onMounted, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { useToast } from 'vue-toastification'
+const { token } = useAuth()
 
 const toast = useToast()
 const config = useRuntimeConfig();
@@ -135,7 +136,8 @@ const fetchFacultades = async () => {
             method: "GET",
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': token.value
             },
             credentials: 'include'
         });
@@ -167,6 +169,9 @@ const handleSubmit = async () => {
         const response = await $fetch(`${config.public.backend_url}/profesor/create`, {
             method: "POST",
             body: formData,
+            headers: {
+                'Authorization': token.value
+            }
         });
 
         // Mensaje de éxito con vue-toastification  

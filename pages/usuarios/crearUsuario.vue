@@ -26,8 +26,8 @@
                         <select id="rol" name="rol" required v-model="form.rol"
                             class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm">
                             <option value="" disabled>Selecciona un rol</option>
-                            <option value="Administrador">Administrador</option>
-                            <option value="Gestor">Gestor</option>
+                            <option value="administrador">administrador</option>
+                            <option value="gestor">gestor</option>
                         </select>
                     </div>
                 </div>
@@ -54,6 +54,7 @@ import { useRouter } from 'vue-router'
 
 import { useToast } from 'vue-toastification'
 
+const { token } = useAuth()
 // Agregar el toast
 const toast = useToast()
 // Configuración en tiempo de ejecución
@@ -86,6 +87,7 @@ const handleSubmit = async () => {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
+                'Authorization': token.value
             },
             body: {
                 nombre_usuario: form.value.nombre_usuario,

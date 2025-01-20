@@ -47,6 +47,7 @@ import { ref, onMounted, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { useToast } from 'vue-toastification'
 
+const { token } = useAuth()
 const toast = useToast()
 const config = useRuntimeConfig();
 const router = useRouter()
@@ -79,7 +80,8 @@ const fetchEncuestas = async () => {
             method: "GET",
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': token.value
             },
             credentials: 'include'
         });
@@ -98,6 +100,7 @@ const handleSubmit = async () => {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
+                'Authorization': token.value
             },
             body: {
                 nombre: form.value.nombre,

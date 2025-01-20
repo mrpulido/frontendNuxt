@@ -88,6 +88,7 @@ import { ref, onMounted } from 'vue'
 import { useToast } from 'vue-toastification'
 import { useRouter, useRoute } from 'vue-router'
 
+const { token } = useAuth();
 const config = useRuntimeConfig();
 const router = useRouter();
 const route = useRoute();
@@ -112,7 +113,12 @@ const show = ref(route.query.show === 'true');
 const cargarProfesor = async () => {
     try {
         const { id } = route.params;
-        const response = await $fetch(`${config.public.backend_url}/profesor/${id}`);
+        const response = await $fetch(`${config.public.backend_url}/profesor/${id}`, {
+            method: 'GET',
+            headers: {
+                'Authorization': token.value
+            }
+        });
         form.value = response;
         // Asignar el nombre de la facultad directamente desde la respuesta
         form.value.facultadNombre = response.facultad ? response.facultad.nombre : null;
@@ -129,7 +135,8 @@ const fetchFacultades = async () => {
             method: "GET",
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': token.value
             },
             credentials: 'include'
         });
@@ -170,6 +177,9 @@ const handleSubmit = async () => {
         await $fetch(`${config.public.backend_url}/profesor/update/${form.value.id}`, {
             method: "PUT",
             body: formData,
+            headers: {
+                'Authorization': token.value
+            }
         });
 
         toast.success("Profesor editado exitosamente.");

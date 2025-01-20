@@ -22,6 +22,7 @@
 import { ref, onMounted } from "vue";
 import { useToast } from 'vue-toastification'
 
+const { token } = useAuth()
 const router = useRouter()
 const toast = useToast()
 const config = useRuntimeConfig();
@@ -58,7 +59,8 @@ const fetchFacultades = async () => {
                 method: "GET",
                 headers: {
                     'Accept': 'application/json',
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': token.value
                 },
                 credentials: 'include'
             }
@@ -85,6 +87,7 @@ const confirmDelete = async () => {
                 method: "DELETE",
                 headers: {
                     "Content-Type": "application/json",
+                    'Authorization': token.value
                 },
             }
         );

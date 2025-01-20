@@ -44,6 +44,8 @@ import { useRouter } from 'vue-router'
 
 import { useToast } from 'vue-toastification'
 
+const { token } = useAuth()
+
 // Agregar el toast
 const toast = useToast()
 // Configuración en tiempo de ejecución
@@ -75,6 +77,7 @@ const handleSubmit = async () => {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
+                'Authorization': token.value
             },
             body: {
                 nombre: form.value.nombre,
