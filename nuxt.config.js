@@ -6,7 +6,14 @@ export default defineNuxtConfig({
     transpile: ["vue-toastification"],
   },
   css: ["~/assets/css/tailwind.css", "vue-toastification/dist/index.css"], // Importa el archivo de Tailwind
-  modules: ["@sidebase/nuxt-auth", "@nuxtjs/tailwindcss", "@nuxt/image", "@nuxt/icon"],
+  modules: [
+    "@sidebase/nuxt-auth",
+    "@nuxtjs/tailwindcss",
+    "@nuxt/image",
+    "@nuxt/icon",
+    "@nuxtjs/seo",
+    // "@zadigetvoltaire/nuxt-gtm",
+  ],
   runtimeConfig: {
     public: {
       backend_url: process.env.BACKEND_URL,
@@ -67,6 +74,40 @@ export default defineNuxtConfig({
     globalAppMiddleware: {
       isEnabled: true,
       allow404WithoutAuth: true,
+    },
+  },
+  site: {
+    url: "process.env.FRONTEND_URL",
+    name: "GestorEncuesta",
+    description:
+      "La mejor herramienta para gestionar encuestas de manera eficiente y efectiva.",
+    defaultLocale: "es",
+  },
+  schemaOrg: {
+    identity: {
+      type: "Organization",
+      name: "GestorEncuesta",
+    },
+  },
+  robots: {
+    enabled: true,
+    robotsEnabledValue:
+      "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+  },
+  sitemap: {
+    enabled: true,
+    autoLastmod: true,
+    xsl: false,
+  },
+  app: {
+    head: {
+      meta: [
+        { name: "robots", content: "index, follow" },
+        { name: "googlebot", content: "index, follow" },
+        { charset: "utf-8" },
+        { name: "viewport", content: "width=device-width, initial-scale=1" },
+      ],
+      link: [{ rel: "icon", type: "image/x-icon", href: "/images/logo.png" }],
     },
   },
 });

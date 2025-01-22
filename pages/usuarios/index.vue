@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="min-h-screen flex flex-col">
         <div class="flex">
             <span class="flex-grow"></span>
             <NuxtLink to="/usuarios/crearUsuario"

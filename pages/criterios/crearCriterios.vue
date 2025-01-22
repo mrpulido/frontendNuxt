@@ -60,6 +60,16 @@ const form = ref({
     encuesta: ''
 });
 
+
+useSeoMeta({
+    title: 'Agregar Nuevo Criterio',
+    ogTitle: 'Agregar Nuevo Criterio',
+    description: 'Página para agregar un nuevo criterio al sistema.',
+    ogDescription: 'Página para agregar un nuevo criterio al sistema.',
+    ogImage: '/images/logo.png',
+    keywords: 'criterio, agregar, sistema'
+});
+
 // Cargar datos del localStorage al montar el componente
 onMounted(() => {
     const savedForm = localStorage.getItem('crearCriteriosForm');

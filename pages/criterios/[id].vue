@@ -51,9 +51,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
 import { useToast } from 'vue-toastification'
-import { useRouter, useRoute } from 'vue-router'
 
 const { token } = useAuth()
 const config = useRuntimeConfig();
@@ -67,10 +65,23 @@ const form = ref({
     id: '',
     nombre: '',
     encuesta: '',
-    encuestaNombre: '' // Añadir para mostrar el nombre de la encuesta
+    encuestaNombre: ''
 });
 
 const show = ref(route.query.show === 'true');
+
+// Configuración dinámica de SEO
+const seoTitle = computed(() => (show.value ? 'Mostrar Criterio' : 'Editar Criterio'));
+const seoDescription = computed(() => (show.value ? 'Página para mostrar un criterio específico en el sistema.' : 'Página para editar un criterio específico en el sistema.'));
+
+useSeoMeta({
+    title: seoTitle,
+    ogTitle: seoTitle,
+    description: seoDescription,
+    ogDescription: seoDescription,
+    ogImage: '/images/logo.png',
+    keywords: 'criterio, editar, sistema'
+});
 
 // Función para cargar los datos del criterio
 const cargarCriterio = async () => {

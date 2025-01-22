@@ -3,7 +3,8 @@
         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
-                    <th v-for="(header, index) in headers" :key="index" scope="col" class="px-6 py-3 text-center">
+                    <th v-for="(header, index) in headers" :key="index" scope="col" class="px-6 py-3 text-center"
+                        :class="{ 'hidden sm:table-cell': index !== 0 }">
                         {{ header.label }}
                     </th>
                     <th scope="col" class="px-6 py-3 text-center">
@@ -14,20 +15,21 @@
             <tbody>
                 <tr v-for="(row, rowIndex) in rows" :key="rowIndex"
                     class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
-                    <td v-for="(header, colIndex) in headers" :key="colIndex" class="px-6 py-4 text-center">
+                    <td v-for="(header, colIndex) in headers" :key="colIndex" class="px-6 py-4 text-center"
+                        :class="{ 'hidden sm:table-cell': colIndex !== 0 }">
                         {{ getNestedValue(row, header.key) }}
                     </td>
                     <td class="px-6 py-4 text-center">
                         <NuxtLink to="" class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                            @click.prevent="show(row)">
+                            @click.prevent="show(row)" aria-label="Ver detalles">
                             <Icon name="heroicons-outline:eye" />
                         </NuxtLink>
                         <NuxtLink to="" class="font-medium text-green-600 dark:text-blue-500 hover:underline ml-2"
-                            @click.prevent="edit(row)">
+                            @click.prevent="edit(row)" aria-label="Editar">
                             <Icon name="heroicons-outline:pencil-alt" />
                         </NuxtLink>
                         <NuxtLink to="#" class="font-medium text-red-600 dark:text-red-500 hover:underline ml-2"
-                            @click.prevent="remove(row)">
+                            @click.prevent="remove(row)" aria-label="Eliminar">
                             <Icon name="heroicons-outline:trash" />
                         </NuxtLink>
                     </td>
@@ -35,12 +37,9 @@
             </tbody>
         </table>
     </div>
-
-
 </template>
 
 <script setup>
-
 const props = defineProps({
     headers: {
         type: Array,
@@ -78,3 +77,11 @@ function getNestedValue(obj, path) {
     return path.split('.').reduce((acc, part) => acc && acc[part], obj);
 }
 </script>
+
+<style scoped>
+@media (max-width: 1024px) {
+    .hidden {
+        display: none;
+    }
+}
+</style>

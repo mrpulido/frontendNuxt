@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="min-h-screen flex flex-col">
         <div class="flex">
             <span class="flex-grow"></span>
             <NuxtLink to="/criterios/crearCriterios"
@@ -21,6 +21,17 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import { useToast } from 'vue-toastification'
+
+
+// Configuración de SEO
+useSeoMeta({
+    title: 'Página de Criterios',
+    ogTitle: 'Página de Criterios',
+    description: 'Explora y gestiona los criterios de encuesta.',
+    ogDescription: 'Explora y gestiona los criterios de encuesta.',
+    ogImage: '/images/logo.png',
+    keywords: 'criterios, evaluación, gestión'
+});
 
 const { token } = useAuth()
 const router = useRouter()
@@ -67,7 +78,6 @@ const fetchCriterios = async () => {
             }
         );
 
-        console.log('Respuesta del backend:', response); // Imprime la respuesta para verificar su estructura
 
         criterios.value = response
         console.log(criterios)

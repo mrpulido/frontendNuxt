@@ -1,6 +1,6 @@
 <template>
     <div v-if="isVisible" class="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center">
-        <div class="bg-white rounded-lg shadow-lg p-6 w-1/3">
+        <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-md mx-4 sm:w-1/2 lg:w-1/3">
             <h3 class="text-lg font-semibold mb-4">{{ title }}</h3>
             <p class="mb-6">{{ message }}</p>
             <div class="flex justify-end space-x-4">

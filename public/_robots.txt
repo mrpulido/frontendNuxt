@@ -1,0 +1,26 @@
+User-agent: *
+
+Disallow: /usuarios
+Disallow: /usuarios/crearUsuario
+Disallow: /usuarios/[id]
+Disallow: /profesor/crearProfesor
+Disallow: /profesor/[id]
+Disallow: /facultad/crearFacultad
+Disallow: /facultad/[id]
+Disallow: /criterios/crearCriterios
+Disallow: /criterios/[id]
+
+Disallow: /encuesta/crearEncuesta
+Disallow: /encuesta/[id]
+
+# Allow all other pages
+Allow: /
+Allow: /login
+Allow: /conf2fa
+Allow: /profesor
+Allow: /facultad
+Allow: /encuesta
+Allow: /criterios
+
+# Sitemap
+Sitemap: /sitemap.xml
