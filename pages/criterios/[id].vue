@@ -73,6 +73,7 @@ const show = ref(route.query.show === 'true');
 // Configuración dinámica de SEO
 const seoTitle = computed(() => (show.value ? 'Mostrar Criterio' : 'Editar Criterio'));
 const seoDescription = computed(() => (show.value ? 'Página para mostrar un criterio específico en el sistema.' : 'Página para editar un criterio específico en el sistema.'));
+const seoKeywords = computed(() => (show.value ? 'criterio, mostrar, sistema' : 'criterio, editar, sistema'));
 
 useSeoMeta({
     title: seoTitle,
@@ -80,7 +81,7 @@ useSeoMeta({
     description: seoDescription,
     ogDescription: seoDescription,
     ogImage: '/images/logo.png',
-    keywords: 'criterio, editar, sistema'
+    keywords: seoKeywords
 });
 
 // Función para cargar los datos del criterio

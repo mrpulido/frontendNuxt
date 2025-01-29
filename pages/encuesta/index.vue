@@ -22,6 +22,15 @@
 import { ref, onMounted } from "vue";
 import { useToast } from 'vue-toastification'
 
+useSeoMeta({
+    title: 'Página de Encuestas',
+    ogTitle: 'Página de Encuestas',
+    description: 'Explora y gestiona las encuestas.',
+    ogDescription: 'Explora y gestiona las encuestas.',
+    ogImage: '/images/logo.png',
+    keywords: 'encuestas, evaluación, gestión'
+});
+
 const router = useRouter()
 const toast = useToast()
 const config = useRuntimeConfig();

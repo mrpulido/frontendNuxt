@@ -67,6 +67,15 @@ const form = ref({
     profesores: []
 });
 
+useSeoMeta({
+    title: 'Agregar Nueva Encuesta',
+    ogTitle: 'Agregar Nueva Encuesta',
+    description: 'Página para agregar una nueva encuesta al sistema.',
+    ogDescription: 'Página para agregar una nueva encuesta al sistema.',
+    ogImage: '/images/logo.png',
+    keywords: 'encuesta, agregar, sistema'
+});
+
 // Cargar datos del localStorage al montar el componente
 onMounted(() => {
     const savedForm = localStorage.getItem('crearEncuestaForm');

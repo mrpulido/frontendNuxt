@@ -47,17 +47,19 @@ const router = useRouter()
 const { token, data } = useAuth()
 const config = useRuntimeConfig()
 const toast = useToast()
-
-
-
-
 const has2FAConfigured = computed(() => data?.value?.twoFactorEnabled)
 const qrCodeUrl = ref('')
 const secretCode = ref('')
 const code = ref('')
 
-
-
+useSeoMeta({
+    title: 'Confirmación 2FA',
+    ogTitle: 'Confirmación 2FA',
+    description: 'Pagina para realizar el segundo factor de autenticación',
+    ogDescription: 'Pagina para realizar el segundo factor de autenticación',
+    ogImage: '/images/logo.png',
+    keywords: 'confirmacion, gestión'
+});
 
 const generateTwoFactor = async () => {
     try {

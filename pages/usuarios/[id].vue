@@ -63,6 +63,20 @@ const form = ref({
 });
 
 const show = ref(route.query.show === 'true');
+//configuracion de seo
+const seoTitle = computed(() => (show.value ? 'Mostrar Usuario' : 'Editar Usuario'));
+const seoDescription = computed(() => (show.value ? 'Página para mostrar un usuario específico en el sistema.' : 'Página para mostrar un usuario específico en el sistema.'));
+const seoKeywords = computed(() => (show.value ? 'usuario, mostrar, sistema' : 'usuario, editar, sistema'));
+
+useSeoMeta({
+    title: seoTitle,
+    ogTitle: seoTitle,
+    description: seoDescription,
+    ogDescription: seoDescription,
+    ogImage: '/images/logo.png',
+    keywords: seoKeywords
+});
+
 
 // Función para cargar los datos de la facultad
 const cargarUsuario = async () => {

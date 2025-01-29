@@ -22,6 +22,15 @@
 import { ref, onMounted } from "vue";
 import { useToast } from 'vue-toastification'
 
+useSeoMeta({
+    title: 'Página de Facultades',
+    ogTitle: 'Página de Facultades',
+    description: 'Explora y gestiona las facultades.',
+    ogDescription: 'Explora y gestiona las facultades.',
+    ogImage: '/images/logo.png',
+    keywords: 'facultades, evaluación, gestión'
+});
+
 const { token } = useAuth()
 const router = useRouter()
 const toast = useToast()

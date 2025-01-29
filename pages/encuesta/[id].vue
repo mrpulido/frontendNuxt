@@ -50,6 +50,8 @@ import { ref, onMounted } from 'vue'
 import { useToast } from 'vue-toastification'
 import { useRouter, useRoute } from 'vue-router'
 
+
+
 const { token } = useAuth();
 const config = useRuntimeConfig();
 const router = useRouter();
@@ -61,9 +63,22 @@ const form = ref({
 });
 
 const show = ref(route.query.show === 'true');
-
 const profesor = ref('');
 const profesores = ref([]);
+
+//configuracion de seo
+const seoTitle = computed(() => (show.value ? 'Mostrar Encuesta' : 'Editar Encuesta'));
+const seoDescription = computed(() => (show.value ? 'Página para mostrar una encuesta específica en el sistema.' : 'Página para editar una encuesta específica en el sistema.'));
+const seoKeywords = computed(() => (show.value ? 'encuesta, mostrar, sistema' : 'encuesta, editar, sistema'));
+
+useSeoMeta({
+    title: seoTitle,
+    ogTitle: seoTitle,
+    description: seoDescription,
+    ogDescription: seoDescription,
+    ogImage: '/images/logo.png',
+    keywords: seoKeywords
+});
 
 // Función para cargar los datos de la encuesta
 const cargarEncuesta = async () => {

@@ -91,6 +91,15 @@ const form = ref({
     imagen: null
 });
 
+useSeoMeta({
+    title: 'Agregar Nuevo Profesor',
+    ogTitle: 'Agregar Nuevo Profesor',
+    description: 'Página para agregar un nuevo profesor al sistema.',
+    ogDescription: 'Página para agregar un nuevo profesor al sistema.',
+    ogImage: '/images/logo.png',
+    keywords: 'profesor, agregar, sistema'
+});
+
 // Cargar datos del localStorage al montar el componente
 onMounted(() => {
     const savedForm = localStorage.getItem('crearProfesorForm');

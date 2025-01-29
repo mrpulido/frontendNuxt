@@ -22,6 +22,15 @@
 import { ref, onMounted } from "vue";
 import { useToast } from 'vue-toastification'
 
+useSeoMeta({
+    title: 'Página de Usuarios',
+    ogTitle: 'Página de Usuarios',
+    description: 'Explora y gestiona los Usuarios.',
+    ogDescription: 'Explora y gestiona los usuarios.',
+    ogImage: '/images/logo.png',
+    keywords: 'usuarios, evaluación, gestión'
+});
+
 const { token } = useAuth()
 const router = useRouter()
 const toast = useToast()

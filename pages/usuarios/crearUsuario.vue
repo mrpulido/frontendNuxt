@@ -67,6 +67,15 @@ const form = ref({
     rol: ''
 })
 
+useSeoMeta({
+    title: 'Agregar Nuevo Usuario',
+    ogTitle: 'Agregar Nuevo Usuario',
+    description: 'Página para agregar un nuevo usuario al sistema.',
+    ogDescription: 'Página para agregar un nuevo usuario al sistema.',
+    ogImage: '/images/logo.png',
+    keywords: 'usuario, agregar, sistema'
+});
+
 // Cargar datos del localStorage al montar el componente
 onMounted(() => {
     const savedForm = localStorage.getItem('crearUsuarioForm');

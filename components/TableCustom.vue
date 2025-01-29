@@ -19,21 +19,21 @@
                         :class="{ 'hidden sm:table-cell': colIndex !== 0 }">
                         {{ getNestedValue(row, header.key) }}
                     </td>
-                    <td class="px-6 py-4 text-center">
-                        <NuxtLink :to="`/details/${row.id}`"
-                            class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                    <td class="px-6 py-4 text-center flex items-center gap-2">
+                        <span class="flex-1"></span>
+                        <button class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
                             @click.prevent="show(row)" aria-label="Ver detalles">
-                            <Icon name="heroicons-outline:eye" />
-                        </NuxtLink>
-                        <NuxtLink :to="`/edit/${row.id}`"
-                            class="font-medium text-green-600 dark:text-blue-500 hover:underline ml-2"
+                            <Icon name="heroicons-outline:eye" size="18" />
+                        </button>
+                        <button class="font-medium text-green-600 dark:text-blue-500 hover:underline ml-2"
                             @click.prevent="edit(row)" aria-label="Editar">
-                            <Icon name="heroicons-outline:pencil-alt" />
-                        </NuxtLink>
+                            <Icon name="heroicons-outline:pencil-alt" size="18" />
+                        </button>
                         <button class="font-medium text-red-600 dark:text-red-500 hover:underline ml-2"
                             @click.prevent="remove(row)" aria-label="Eliminar">
-                            <Icon name="heroicons-outline:trash" />
+                            <Icon name="heroicons-outline:trash" size="18" />
                         </button>
+                        <span class="flex-1"></span>
                     </td>
                 </tr>
             </tbody>

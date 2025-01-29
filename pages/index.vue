@@ -6,3 +6,16 @@
 
   </div>
 </template>
+
+<script setup>
+
+useSeoMeta({
+  title: 'Página de inicio',
+  ogTitle: 'Página de inicio ',
+  description: 'Inicio de la aplicación.',
+  ogDescription: 'Inicio de la aplicación.',
+  ogImage: '/images/logo.png',
+  keywords: 'home, inicio, gestión'
+});
+
+</script>

@@ -109,6 +109,20 @@ const form = ref({
 
 const show = ref(route.query.show === 'true');
 
+//configuracion de seo
+const seoTitle = computed(() => (show.value ? 'Mostrar Profesor' : 'Editar Profesor'));
+const seoDescription = computed(() => (show.value ? 'Página para mostrar un profesor específica en el sistema.' : 'Página para editar un profesor específica en el sistema.'));
+const seoKeywords = computed(() => (show.value ? 'profesor, mostrar, sistema' : 'profesor, editar, sistema'));
+
+useSeoMeta({
+    title: seoTitle,
+    ogTitle: seoTitle,
+    description: seoDescription,
+    ogDescription: seoDescription,
+    ogImage: '/images/logo.png',
+    keywords: seoKeywords
+});
+
 // Función para cargar los datos del profesor
 const cargarProfesor = async () => {
     try {

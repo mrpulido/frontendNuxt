@@ -41,11 +41,19 @@
 <script setup>
 import { ref, onMounted, watch } from 'vue'
 import { useRouter } from 'vue-router'
-
 import { useToast } from 'vue-toastification'
 
-const { token } = useAuth()
+useSeoMeta({
+    title: 'Agregar Nueva Facultad',
+    ogTitle: 'Agregar Nueva Facultad',
+    description: 'Página para agregar una nueva facultad al sistema.',
+    ogDescription: 'Página para agregar una nueva facultad al sistema.',
+    ogImage: '/images/logo.png',
+    keywords: 'facultad, agregar, sistema'
+});
 
+
+const { token } = useAuth()
 // Agregar el toast
 const toast = useToast()
 // Configuración en tiempo de ejecución

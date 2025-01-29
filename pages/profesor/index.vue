@@ -22,6 +22,15 @@
 import { ref, onMounted } from "vue";
 import { useToast } from 'vue-toastification'
 
+useSeoMeta({
+    title: 'Página de Profesores',
+    ogTitle: 'Página de Profesores',
+    description: 'Explora y gestiona los profesores.',
+    ogDescription: 'Explora y gestiona los profesores.',
+    ogImage: '/images/logo.png',
+    keywords: 'profesores, evaluación, gestión'
+});
+
 const { token } = useAuth()
 const router = useRouter()
 const toast = useToast()
