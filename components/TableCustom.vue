@@ -20,18 +20,20 @@
                         {{ getNestedValue(row, header.key) }}
                     </td>
                     <td class="px-6 py-4 text-center">
-                        <NuxtLink to="" class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                        <NuxtLink :to="`/details/${row.id}`"
+                            class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
                             @click.prevent="show(row)" aria-label="Ver detalles">
                             <Icon name="heroicons-outline:eye" />
                         </NuxtLink>
-                        <NuxtLink to="" class="font-medium text-green-600 dark:text-blue-500 hover:underline ml-2"
+                        <NuxtLink :to="`/edit/${row.id}`"
+                            class="font-medium text-green-600 dark:text-blue-500 hover:underline ml-2"
                             @click.prevent="edit(row)" aria-label="Editar">
                             <Icon name="heroicons-outline:pencil-alt" />
                         </NuxtLink>
-                        <NuxtLink to="#" class="font-medium text-red-600 dark:text-red-500 hover:underline ml-2"
+                        <button class="font-medium text-red-600 dark:text-red-500 hover:underline ml-2"
                             @click.prevent="remove(row)" aria-label="Eliminar">
                             <Icon name="heroicons-outline:trash" />
-                        </NuxtLink>
+                        </button>
                     </td>
                 </tr>
             </tbody>
