@@ -68,8 +68,8 @@
                 <div class="flex justify-between space-x-6">
                     <button type="submit"
                         class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                        v-if="!show">
-                        Editar
+                        v-if="!show" :disabled="isSubmitting">
+                        {{ isSubmitting ? 'Procesando...' : 'Editar' }}
                     </button>
                     <button type="button"
                         class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-700"
@@ -122,6 +122,8 @@ useSeoMeta({
     keywords: seoKeywords
 });
 
+const isSubmitting = ref(false); // Nueva propiedad para rastrear el estado de envío
+
 // Función para cargar los datos del profesor
 const cargarProfesor = async () => {
     try {
@@ -171,6 +173,7 @@ const handleFileChange = (event) => {
 };
 
 const handleSubmit = async () => {
+    isSubmitting.value = true; // Indicar que el envío ha comenzado
     try {
         const formData = new FormData();
         formData.append('nombre', form.value.nombre);
@@ -199,6 +202,8 @@ const handleSubmit = async () => {
         router.back(); // Redirige a la página anterior
     } catch (error) {
         toast.error(`Error al editar el profesor: ${error.message}`);
+    } finally {
+        isSubmitting.value = false; // Restablecer el estado de envío
     }
 };
 

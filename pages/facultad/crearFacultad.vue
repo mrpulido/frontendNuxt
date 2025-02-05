@@ -23,9 +23,9 @@
                 </div>
 
                 <div class="flex justify-between space-x-6">
-                    <button type="submit"
+                    <button type="submit" :disabled="isLoading"
                         class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                        Agregar
+                        {{ isLoading ? 'Procesando...' : 'Agregar' }}
                     </button>
                     <button type="button"
                         class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-700"
@@ -65,6 +65,8 @@ const form = ref({
     responsable: ''
 })
 
+const isLoading = ref(false); // Nueva propiedad para controlar el estado de carga
+
 // Cargar datos del localStorage al montar el componente
 onMounted(() => {
     const savedForm = localStorage.getItem('crearFacultadForm');
@@ -80,6 +82,7 @@ watch(form, (newForm) => {
 
 const handleSubmit = async () => {
     const toast = useToast(); // Inicializa el uso de toast  
+    isLoading.value = true; // Establece el estado de carga a verdadero
     try {
         const response = await $fetch(`${config.public.backend_url}/facultad/create`, {
             method: "POST",
@@ -107,6 +110,8 @@ const handleSubmit = async () => {
     } catch (error) {
         // Mensaje de error con vue-toastification  
         toast.error(`Error al agregar la facultad: ${error.response._data.message}`);
+    } finally {
+        isLoading.value = false; // Restablece el estado de carga a falso
     }
 };
 

@@ -27,10 +27,9 @@
                 </div>
 
                 <div class="flex justify-between space-x-6">
-                    <button type="submit" :disabled="isLoading"
+                    <button type="submit" :disabled="isSubmitting"
                         class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                        <span v-if="isLoading" class="loader"></span>
-                        <span v-else>Agregar</span>
+                        {{ isSubmitting ? 'Procesando...' : 'Agregar' }}
                     </button>
                     <button type="button"
                         class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-700"

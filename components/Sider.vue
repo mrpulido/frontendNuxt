@@ -79,14 +79,13 @@
         <li>
           <div
             class="text-black hover:text-blue-600 text-[15px] flex items-center hover:bg-white rounded px-4 py-3 transition-all">
-
-            <button class="flex" @click="logout">
+            <button class="flex" @click="logout" :disabled="loading">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                 stroke="currentColor" class="w-7 h-7 mr-4">
                 <path stroke-linecap="round" stroke-linejoin="round"
                   d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" />
               </svg>
-              <span>Salir</span>
+              <span>{{ loading ? 'Procesando...' : 'Salir' }}</span>
             </button>
           </div>
         </li>
@@ -107,6 +106,7 @@ const isAdmin = computed(() => {
 console.log(data.value.rol)
 const toast = useToast();
 const showSider = ref(true);
+const loading = ref(false);
 
 const handleNavigation = () => {
   if (window.innerWidth < 1024) {
@@ -115,11 +115,16 @@ const handleNavigation = () => {
 };
 
 const logout = async () => {
-  await signOut({ callbackUrl: '/login', redirect: true })
-
-  toast.success("Sesión cerrada exitosamente")
-
-}
+  loading.value = true;
+  try {
+    await signOut({ callbackUrl: '/login', redirect: true });
+    toast.success("Sesión cerrada exitosamente");
+  } catch (error) {
+    toast.error("Error al cerrar sesión");
+  } finally {
+    loading.value = false;
+  }
+};
 
 
 </script>

@@ -25,9 +25,9 @@
                 </div>
 
                 <div class="flex justify-between space-x-6">
-                    <button v-if="!show" type="submit"
+                    <button v-if="!show" type="submit" :disabled="isSubmitting"
                         class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                        Editar
+                        {{ isSubmitting ? 'Procesando...' : 'Editar' }}
                     </button>
                     <button type="button"
                         class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-700"
@@ -73,6 +73,8 @@ useSeoMeta({
     keywords: seoKeywords
 });
 
+const isSubmitting = ref(false);
+
 // Función para cargar los datos de la facultad
 const cargarFacultad = async () => {
     try {
@@ -94,6 +96,7 @@ onMounted(() => {
 });
 
 const handleSubmit = async () => {
+    isSubmitting.value = true;
     try {
         const response = await $fetch(`${config.public.backend_url}/facultad/update/${form.value.id}`, {
             method: "PUT",
@@ -111,6 +114,8 @@ const handleSubmit = async () => {
         router.push('/facultad');
     } catch (error) {
         toast.error(`Error al editar la facultad: ${error.message}`);
+    } finally {
+        isSubmitting.value = false;
     }
 };
 

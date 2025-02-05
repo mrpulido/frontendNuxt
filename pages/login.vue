@@ -29,7 +29,7 @@
             <div class="p-6 pt-0">
                 <button @click="handleLogin" :disabled="isLoading" data-ripple-light="true" type="button"
                     class="block w-full select-none rounded-lg bg-gradient-to-tr from-purple-400 via-pink-500 to-red-500 bg-clip-border text-white shadow-lg shadow-purple-500/40 py-3 px-6 text-center align-middle font-sans text-xs font-bold uppercase transition-all hover:shadow-lg hover:shadow-purple-800/40 active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none">
-                    {{ isLoading ? 'Cargando...' : 'Iniciar Sesión' }}
+                    {{ isLoading ? 'Procesando...' : 'Iniciar Sesión' }}
                 </button>
 
             </div>
