@@ -106,7 +106,7 @@ const handleSubmit = async () => {
         router.push('/facultad'); // Cambia '/facultad' por la ruta que desees  
     } catch (error) {
         // Mensaje de error con vue-toastification  
-        toast.error(`Error al agregar la facultad: ${error.message}`);
+        toast.error(`Error al agregar la facultad: ${error.response._data.message}`);
     }
 };
 

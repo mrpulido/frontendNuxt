@@ -570,9 +570,9 @@
     "@iconify/types" "*"
 
 "@iconify/collections@^1.0.496":
-  version "1.0.509"
-  resolved "https://registry.yarnpkg.com/@iconify/collections/-/collections-1.0.509.tgz#2cd044def8e112c019f01ae39126377fa5a3036a"
-  integrity sha512-gokFSXhdQg/z60xb2dfEGG7kpbDk+vt7ewdMOTMFnCDFo08Z3uUFCF6M1/m7QQUP9EjSMF6bK9MRQUfW3j+fQA==
+  version "1.0.514"
+  resolved "https://registry.yarnpkg.com/@iconify/collections/-/collections-1.0.514.tgz#cf27619b21779a6f5268ef5f20398e0735f6e728"
+  integrity sha512-vdHSxEmiTOGf3vdJ5k1V9OotdEG05ZO9RUZ9V/eJxDaEqgW79YQvRQ5bdvNmjFuIjDIq6JrEeflHY3Zu3c4/vA==
   dependencies:
     "@iconify/types" "*"
 

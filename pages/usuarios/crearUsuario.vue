@@ -122,7 +122,7 @@ const handleSubmit = async () => {
         router.push('/usuarios'); // Cambia '/usuarios' por la ruta que desees  
     } catch (error) {
         // Mensaje de error con vue-toastification  
-        toast.error(`Error al agregar el usuario: ${error.message}`);
+        toast.error(`Error al agregar el usuario: ${error.response._data.message}`);
     }
 };
 

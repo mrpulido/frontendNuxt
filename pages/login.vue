@@ -54,7 +54,10 @@ useSeoMeta({
     description: 'Login de la aplicación.',
     ogDescription: 'Login de la aplicación.',
     ogImage: '/images/logo.png',
-    keywords: 'login, gestión'
+    keywords: 'login, gestión',
+    alternateLinks: {
+        canonical: `${useRuntimeConfig().public.frontend_url}/login`
+    }
 });
 
 const toast = useToast()

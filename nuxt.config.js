@@ -17,6 +17,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       backend_url: process.env.BACKEND_URL,
+      frontend_url: process.env.FRONTEND_URL,
     },
   },
   auth: {
@@ -77,7 +78,7 @@ export default defineNuxtConfig({
     },
   },
   site: {
-    url: "process.env.FRONTEND_URL",
+    url: process.env.FRONTEND_URL,
     name: "GestorEncuesta",
     description:
       "La mejor herramienta para gestionar encuestas de manera eficiente y efectiva.",
