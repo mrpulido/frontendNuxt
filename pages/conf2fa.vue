@@ -25,9 +25,9 @@
                 </div>
 
                 <div>
-                    <button type="submit"
-                        class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                        {{ has2FAConfigured ? 'Verificar' : 'Configurar 2FA' }}
+                    <button type="submit" :disabled="isLoading"
+                        class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50">
+                        {{ isLoading ? 'Cargando...' : (has2FAConfigured ? 'Verificar' : 'Configurar 2FA') }}
                     </button>
                 </div>
             </form>
@@ -51,6 +51,7 @@ const has2FAConfigured = computed(() => data?.value?.twoFactorEnabled)
 const qrCodeUrl = ref('')
 const secretCode = ref('')
 const code = ref('')
+const isLoading = ref(false);
 
 useSeoMeta({
     title: 'Confirmación 2FA',
@@ -117,13 +118,20 @@ const validate2FA = async () => {
 }
 
 const validateCode = async () => {
-
-    if (has2FAConfigured.value) {
-        validate2FA()
-    } else {
-        setup2FA()
+    isLoading.value = true;
+    try {
+        if (has2FAConfigured.value) {
+            await validate2FA();
+        } else {
+            await setup2FA();
+        }
+    } catch (error) {
+        console.error('Error detallado:', error);
+        const errorMessage = error.data?.message || 'Error inesperado';
+        toast.error(errorMessage);
+    } finally {
+        isLoading.value = false;
     }
-
 }
 
 onMounted(async () => {

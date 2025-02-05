@@ -24,13 +24,16 @@
                         <button class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
                             @click.prevent="show(row)" aria-label="Ver detalles">
                             <Icon name="heroicons-outline:eye" size="18" />
+                            Mostrar
                         </button>
                         <button class="font-medium text-green-600 dark:text-blue-500 hover:underline ml-2"
                             @click.prevent="edit(row)" aria-label="Editar">
+                            Editar
                             <Icon name="heroicons-outline:pencil-alt" size="18" />
                         </button>
                         <button class="font-medium text-red-600 dark:text-red-500 hover:underline ml-2"
                             @click.prevent="remove(row)" aria-label="Eliminar">
+                            Eliminar
                             <Icon name="heroicons-outline:trash" size="18" />
                         </button>
                         <span class="flex-1"></span>

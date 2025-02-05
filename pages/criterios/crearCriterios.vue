@@ -27,9 +27,10 @@
                 </div>
 
                 <div class="flex justify-between space-x-6">
-                    <button type="submit"
+                    <button type="submit" :disabled="isLoading"
                         class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                        Agregar
+                        <span v-if="isLoading" class="loader"></span>
+                        <span v-else>Agregar</span>
                     </button>
                     <button type="button"
                         class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-700"
@@ -60,6 +61,7 @@ const form = ref({
     encuesta: ''
 });
 
+const isLoading = ref(false);
 
 useSeoMeta({
     title: 'Agregar Nuevo Criterio',
@@ -105,6 +107,7 @@ const fetchEncuestas = async () => {
 
 const handleSubmit = async () => {
     const toast = useToast(); // Inicializa el uso de toast  
+    isLoading.value = true; // Inicia el estado de carga
     try {
         const response = await $fetch(`${config.public.backend_url}/criterios/create`, {
             method: "POST",
@@ -135,6 +138,8 @@ const handleSubmit = async () => {
     } catch (error) {
         // Mensaje de error con vue-toastification  
         toast.error(`Error al agregar el criterio: ${error.message}`);
+    } finally {
+        isLoading.value = false; // Finaliza el estado de carga
     }
 };
 

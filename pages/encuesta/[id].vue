@@ -30,9 +30,9 @@
                 </div>
 
                 <div class="flex justify-between space-x-6">
-                    <button v-if="!show" type="submit"
+                    <button v-if="!show" type="submit" :disabled="loading"
                         class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                        Editar
+                        {{ loading ? 'Procesando...' : 'Editar' }}
                     </button>
                     <button type="button"
                         class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-700"
@@ -50,8 +50,6 @@ import { ref, onMounted } from 'vue'
 import { useToast } from 'vue-toastification'
 import { useRouter, useRoute } from 'vue-router'
 
-
-
 const { token } = useAuth();
 const config = useRuntimeConfig();
 const router = useRouter();
@@ -65,6 +63,7 @@ const form = ref({
 const show = ref(route.query.show === 'true');
 const profesor = ref('');
 const profesores = ref([]);
+const loading = ref(false);
 
 //configuracion de seo
 const seoTitle = computed(() => (show.value ? 'Mostrar Encuesta' : 'Editar Encuesta'));
@@ -123,6 +122,7 @@ onMounted(async () => {
 });
 
 const handleSubmit = async () => {
+    loading.value = true;
     try {
         const response = await $fetch(`${config.public.backend_url}/encuesta/update/${form.value.id}`, {
             method: "PUT",
@@ -140,6 +140,8 @@ const handleSubmit = async () => {
         router.push('/encuesta');
     } catch (error) {
         toast.error(`Error al editar la encuesta: ${error.message}`);
+    } finally {
+        loading.value = false;
     }
 };
 

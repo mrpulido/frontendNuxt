@@ -34,10 +34,10 @@
                 </div>
 
                 <div class="flex justify-between space-x-6">
-                    <button type="submit"
-                        class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                    <button type="submit" :disabled="isLoading"
+                        class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
                         v-if="!show">
-                        Editar
+                        {{ isLoading ? 'Cargando...' : 'Editar' }}
                     </button>
                     <button type="button"
                         class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-700"
@@ -83,6 +83,8 @@ useSeoMeta({
     ogImage: '/images/logo.png',
     keywords: seoKeywords
 });
+
+const isLoading = ref(false);
 
 // Función para cargar los datos del criterio
 const cargarCriterio = async () => {
@@ -131,6 +133,7 @@ onMounted(async () => {
 });
 
 const handleSubmit = async () => {
+    isLoading.value = true; // Activar el estado de carga
     try {
         await $fetch(`${config.public.backend_url}/criterios/update/${form.value.id}`, {
             method: "PUT",
@@ -148,6 +151,8 @@ const handleSubmit = async () => {
         router.back(); // Redirige a la página anterior
     } catch (error) {
         toast.error(`Error al editar el criterio: ${error.message}`);
+    } finally {
+        isLoading.value = false; // Desactivar el estado de carga
     }
 };
 

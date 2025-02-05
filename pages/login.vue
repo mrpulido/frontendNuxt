@@ -27,9 +27,9 @@
 
             </div>
             <div class="p-6 pt-0">
-                <button @click="handleLogin" data-ripple-light="true" type="button"
-                    class="block w-full select-none rounded-lg  bg-gradient-to-tr from-purple-400 via-pink-500 to-red-500 bg-clip-border text-white shadow-lg shadow-purple-500/40 py-3 px-6 text-center align-middle font-sans text-xs font-bold uppercase transition-all hover:shadow-lg hover:shadow-purple-800/40 active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none">
-                    Iniciar Sesión
+                <button @click="handleLogin" :disabled="isLoading" data-ripple-light="true" type="button"
+                    class="block w-full select-none rounded-lg bg-gradient-to-tr from-purple-400 via-pink-500 to-red-500 bg-clip-border text-white shadow-lg shadow-purple-500/40 py-3 px-6 text-center align-middle font-sans text-xs font-bold uppercase transition-all hover:shadow-lg hover:shadow-purple-800/40 active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none">
+                    {{ isLoading ? 'Cargando...' : 'Iniciar Sesión' }}
                 </button>
 
             </div>
@@ -65,24 +65,24 @@ const nombre_usuario = ref('');
 const contrasena = ref('');
 const router = useRouter();
 const { signIn, status } = useAuth()
-
+const isLoading = ref(false);
 
 const handleLogin = async () => {
+    isLoading.value = true;
     try {
-
         await signIn({
             nombre_usuario: nombre_usuario.value,
             contrasena: contrasena.value
         }, { callbackUrl: '/conf2fa', redirect: true })
 
         toast.success('Inicio de sesión exitoso')
-
     } catch (error) {
         console.error('Error detallado:', error)
         const errorMessage = error.data?.message || 'Error al iniciar sesión'
         toast.error(errorMessage)
+    } finally {
+        isLoading.value = false;
     }
-
 };
 
 

@@ -10,7 +10,6 @@ export default defineNuxtConfig({
     "@sidebase/nuxt-auth",
     "@nuxtjs/tailwindcss",
     "@nuxt/image",
-    "@nuxt/icon",
     "@nuxtjs/seo",
     // "@zadigetvoltaire/nuxt-gtm",
   ],
