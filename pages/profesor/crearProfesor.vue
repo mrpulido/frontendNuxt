@@ -47,7 +47,7 @@
                     </div>
                     <div>
                         <label for="imagen" class="sr-only">Imagen</label>
-                        <input id="imagen" name="imagen" type="file" @change="handleFileChange"
+                        <input id="imagen" name="imagen" type="file" @change="handleFileChange" accept="image/*"
                             class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                             placeholder="Imagen del profesor">
                     </div>

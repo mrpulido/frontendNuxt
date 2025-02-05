@@ -7,10 +7,9 @@
                 </h2>
             </div>
             <!-- Mostrar la imagen del profesor si existe -->
-            <div v-if="form.imagen" class="flex justify-center mb-4">
-                <img :src="`${config.public.backend_url}/${form.imagen}`" alt="Imagen del Profesor"
-                    class="w-32 h-32 object-cover rounded-full">
-            </div>
+            <NuxtLink v-if="form.imagen" :to="imagePreview" class="flex justify-center mb-4">
+                <img :src="imagePreview" alt="Imagen del Profesor" class="w-32 h-32 object-cover rounded-full">
+            </NuxtLink>
             <form class="mt-8 space-y-6" @submit.prevent="show ? cancelar() : handleSubmit()">
                 <div class="rounded-md shadow-sm -space-y-px">
                     <div>
@@ -60,7 +59,7 @@
                     </div>
                     <div v-if="!show">
                         <label for="imagen" class="sr-only">Nueva Imagen</label>
-                        <input id="imagen" name="imagen" type="file" @change="handleFileChange"
+                        <input id="imagen" name="imagen" type="file" @change="handleFileChange" accept="image/*"
                             class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                             placeholder="Nueva Imagen del Profesor">
                     </div>
@@ -84,7 +83,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { useToast } from 'vue-toastification'
 import { useRouter, useRoute } from 'vue-router'
 
@@ -206,4 +205,16 @@ const handleSubmit = async () => {
 const cancelar = () => {
     router.push('/profesor');
 };
+
+// Computed property para manejar la vista previa de la imagen
+const imagePreview = computed(() => {
+    if (form.value.imagen instanceof File) {
+        // Si es un archivo, crea una URL de objeto para la vista previa
+        return URL.createObjectURL(form.value.imagen);
+    }
+    // Si es una cadena, asume que es una URL existente
+    return form.value.imagen.startsWith('http')
+        ? form.value.imagen
+        : `${config.public.backend_url}/${form.value.imagen}`;
+});
 </script>
