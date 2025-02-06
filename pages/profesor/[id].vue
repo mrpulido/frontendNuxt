@@ -15,6 +15,7 @@
                     <div>
                         <label for="nombre" class="sr-only">Nombre</label>
                         <input id="nombre" name="nombre" type="text" required v-model="form.nombre" :disabled="show"
+                            @input="form.nombre = form.nombre.replace(/[^a-zA-Z\s]/g, '')"
                             class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                             placeholder="Nombre del Profesor">
                     </div>
@@ -30,13 +31,14 @@
                     <div>
                         <label for="edad" class="sr-only">Edad</label>
                         <input id="edad" name="edad" type="text" required v-model="form.edad" :disabled="show"
+                            @input="form.edad = form.edad.replace(/[^0-9]/g, '')"
                             class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                             placeholder="Edad">
                     </div>
                     <div>
                         <label for="asignatura" class="sr-only">Asignatura</label>
                         <input id="asignatura" name="asignatura" type="text" required v-model="form.asignatura"
-                            :disabled="show"
+                            :disabled="show" @input="form.asignatura = form.asignatura.replace(/[^a-zA-Z0-9\s]/g, '')"
                             class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                             placeholder="Asignatura">
                     </div>

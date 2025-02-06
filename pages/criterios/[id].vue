@@ -12,7 +12,7 @@
                         <label for="nombre" class="sr-only">Nombre</label>
                         <input id="nombre" name="nombre" type="text" required v-model="form.nombre" :disabled="show"
                             class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                            placeholder="Nombre del Criterio">
+                            placeholder="Nombre del Criterio" @input="soloLetras">
                     </div>
                     <div v-if="show">
                         <label for="encuesta" class="sr-only">Encuesta</label>
@@ -158,5 +158,11 @@ const handleSubmit = async () => {
 
 const cancelar = () => {
     router.push('/criterios');
+};
+
+const soloLetras = (event) => {
+    const regex = /[^a-zA-Z\s]/g;
+    event.target.value = event.target.value.replace(regex, '');
+    form.value.nombre = event.target.value;
 };
 </script>

@@ -7,8 +7,9 @@
                 <button @click="cancel" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
                     Cancelar
                 </button>
-                <button @click="confirm" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
-                    Confirmar
+                <button @click="confirm" :disabled="loading"
+                    class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                    {{ loading ? 'Procesando...' : 'Confirmar' }}
                 </button>
             </div>
         </div>
@@ -16,6 +17,7 @@
 </template>
 
 <script setup>
+import { ref } from 'vue';
 
 const props = defineProps({
     title: {
@@ -34,9 +36,15 @@ const props = defineProps({
 
 const emit = defineEmits(['confirm', 'cancel', 'update:isVisible']);
 
+const loading = ref(false);
+
 function confirm() {
+    loading.value = true;
     emit('confirm');
-    close();
+    setTimeout(() => {
+        close();
+        loading.value = false;
+    }, 2000);
 }
 
 function cancel() {

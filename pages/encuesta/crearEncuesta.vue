@@ -11,6 +11,7 @@
                     <div>
                         <label for="nombre" class="sr-only">Nombre</label>
                         <input id="nombre" name="nombre" type="text" required v-model="form.nombre"
+                            @input="validateNombreInput"
                             class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                             placeholder="Nombre de la encuesta">
                     </div>
@@ -112,6 +113,7 @@ onMounted(async () => {
 
 const handleSubmit = async () => {
     const toast = useToast(); // Inicializa el uso de toast  
+
     isSubmitting.value = true; // Indica que el envío está en proceso
     try {
         const response = await $fetch(`${config.public.backend_url}/encuesta/create`, {
@@ -142,7 +144,7 @@ const handleSubmit = async () => {
         router.push('/encuesta'); // Cambia '/encuesta' por la ruta que desees  
     } catch (error) {
         // Mensaje de error con vue-toastification  
-        toast.error(`Error al agregar la encuesta: ${error.message}`);
+        toast.error(`Error al agregar la encuesta: ${error.response._data.message}`);
     } finally {
         isSubmitting.value = false; // Restablece el estado de envío
     }
@@ -153,4 +155,10 @@ const cancelar = () => {
     router.push('/encuesta'); // Cambia '/encuesta' por la ruta que desees
 
 }
+
+const validateNombreInput = (event) => {
+    const input = event.target;
+    input.value = input.value.replace(/[^A-Za-z\s]/g, '');
+    form.value.nombre = input.value;
+};
 </script>

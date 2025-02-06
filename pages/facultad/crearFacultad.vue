@@ -11,12 +11,14 @@
                     <div>
                         <label for="nombre" class="sr-only">Nombre</label>
                         <input id="nombre" name="nombre" type="text" required v-model="form.nombre"
+                            @input="form.nombre = form.nombre.replace(/[^a-zA-Z\s]/g, '')"
                             class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                             placeholder="Nombre de la facultad">
                     </div>
                     <div>
                         <label for="responsable" class="sr-only">Responsable</label>
                         <input id="responsable" name="responsable" type="text" required v-model="form.responsable"
+                            @input="form.responsable = form.responsable.replace(/[^a-zA-Z\s]/g, '')"
                             class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                             placeholder="Responsable">
                     </div>

@@ -11,6 +11,7 @@
                     <div>
                         <label for="nombre" class="sr-only">{{ show ? 'Mostrando Nombre' : 'Nombre' }}</label>
                         <input id="nombre" name="nombre" type="text" required v-model="form.nombre" :disabled="show"
+                            @input="soloLetras('nombre')"
                             class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                             placeholder="Nombre de la facultad">
                     </div>
@@ -18,7 +19,7 @@
                         <label for="responsable" class="sr-only">{{ show ? 'Mostrando Responsable' : 'Responsable'
                             }}</label>
                         <input id="responsable" name="responsable" type="text" required v-model="form.responsable"
-                            :disabled="show"
+                            :disabled="show" @input="soloLetras('responsable')"
                             class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                             placeholder="Responsable">
                     </div>
@@ -113,7 +114,7 @@ const handleSubmit = async () => {
         toast.success("Facultad editada exitosamente.");
         router.push('/facultad');
     } catch (error) {
-        toast.error(`Error al editar la facultad: ${error.message}`);
+        toast.error(`Error al editar la facultad: ${error.response._data.message}`);
     } finally {
         isSubmitting.value = false;
     }
@@ -123,5 +124,9 @@ const cancelar = () => {
     localStorage.removeItem('editarFacultadForm');
     form.value = { id: '', nombre: '', responsable: '' };
     router.push('/facultad');
+};
+
+const soloLetras = (campo) => {
+    form.value[campo] = form.value[campo].replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '');
 };
 </script>

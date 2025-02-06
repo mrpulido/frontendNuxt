@@ -11,6 +11,7 @@
                     <div>
                         <label for="nombre" class="sr-only">{{ show ? 'Mostrando Nombre' : 'Nombre' }}</label>
                         <input id="nombre" name="nombre" type="text" required v-model="form.nombre" :disabled="show"
+                            @input="validateNombreInput"
                             class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                             placeholder="Nombre de la encuesta">
                     </div>
@@ -139,7 +140,7 @@ const handleSubmit = async () => {
         toast.success("Encuesta editada exitosamente.");
         router.push('/encuesta');
     } catch (error) {
-        toast.error(`Error al editar la encuesta: ${error.message}`);
+        toast.error(`Error al editar la encuesta: ${error.response._data.message}`);
     } finally {
         loading.value = false;
     }
@@ -147,5 +148,11 @@ const handleSubmit = async () => {
 
 const cancelar = () => {
     router.push('/encuesta');
+};
+
+const validateNombreInput = (event) => {
+    const input = event.target;
+    input.value = input.value.replace(/[^A-Za-z\s]/g, '');
+    form.value.nombre = input.value;
 };
 </script>

@@ -118,7 +118,7 @@ const handleSubmit = async () => {
         toast.success("Usuario editado exitosamente.");
         router.push('/usuarios');
     } catch (error) {
-        toast.error(`Error al editar el usuario: ${error.message}`);
+        toast.error(`Error al agregar el usuario: ${error.response._data.message}`);
     } finally {
         isProcessing.value = false;
     }

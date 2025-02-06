@@ -11,8 +11,9 @@
                     <div>
                         <label for="nombre" class="sr-only">Nombre</label>
                         <input id="nombre" name="nombre" type="text" required v-model="form.nombre"
+                            @input="form.nombre = form.nombre.replace(/[^A-Za-z\s]/g, '')"
                             class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                            placeholder="Nombre del profesor">
+                            placeholder="Nombre del profesor" pattern="[A-Za-z\s]+" title="Solo se permiten letras">
                     </div>
                     <div>
                         <label for="sexo" class="sr-only">Sexo</label>
@@ -26,14 +27,16 @@
                     <div>
                         <label for="edad" class="sr-only">Edad</label>
                         <input id="edad" name="edad" type="text" required v-model="form.edad"
+                            @input="form.edad = form.edad.replace(/[^\d]/g, '')"
                             class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                            placeholder="Edad">
+                            placeholder="Edad" pattern="\d+" title="Solo se permiten números">
                     </div>
                     <div>
                         <label for="asignatura" class="sr-only">Asignatura</label>
                         <input id="asignatura" name="asignatura" type="text" required v-model="form.asignatura"
+                            @input="form.asignatura = form.asignatura.replace(/[^A-Za-z0-9\s]/g, '')"
                             class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                            placeholder="Asignatura">
+                            placeholder="Asignatura" pattern="[A-Za-z0-9\s]+" title="Solo se permiten letras y números">
                     </div>
                     <div>
                         <label for="facultad" class="sr-only">Facultad</label>
@@ -206,7 +209,7 @@ const handleSubmit = async () => {
         router.push('/profesor'); // Cambia '/profesor' por la ruta que desees  
     } catch (error) {
         // Mensaje de error con vue-toastification  
-        toast.error(`Error al agregar el profesor: ${error.message}`);
+        toast.error(`Error al agregar el profesor: ${error.response._data.message}`);
     } finally {
         isSubmitting.value = false; // Restablece el estado de envío
     }

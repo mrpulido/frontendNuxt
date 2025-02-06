@@ -11,6 +11,7 @@
                     <div>
                         <label for="nombre" class="sr-only">Nombre</label>
                         <input id="nombre" name="nombre" type="text" required v-model="form.nombre"
+                            @input="form.nombre = form.nombre.replace(/[^a-zA-Z\s]/g, '')"
                             class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                             placeholder="Nombre del criterio">
                     </div>
@@ -136,7 +137,8 @@ const handleSubmit = async () => {
         router.push('/criterios'); // Cambia '/criterio' por la ruta que desees  
     } catch (error) {
         // Mensaje de error con vue-toastification  
-        toast.error(`Error al agregar el criterio: ${error.message}`);
+        //toast.error(`Error al agregar el criterio: ${error.message}`);
+        toast.error(`Error al agregar el criterio: ${error.response._data.message}`); //no se repita el citerio
     } finally {
         isLoading.value = false; // Finaliza el estado de carga
     }
