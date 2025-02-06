@@ -2,8 +2,9 @@
     <div class="flex items-center justify-center min-h-screen bg-gray-100">
         <div class="relative flex w-96 flex-col rounded-xl bg-white bg-clip-border text-gray-700 shadow-md">
             <div
-                class="relative mx-4 -mt-6 mb-4 grid h-28 place-items-center overflow-hidden rounded-xl bg-gradient-to-tr from-purple-400 via-pink-500 to-red-500 bg-clip-border text-white shadow-lg shadow-purple-500/40">
-                <h3 class="block font-sans text-3xl font-semibold leading-snug tracking-normal text-white antialiased">
+                class="relative mx-4 -mt-6 mb-4 grid h-28 place-items-center overflow-hidden rounded-lg bg-white text-gray-800 shadow-md">
+                <h3
+                    class="block font-sans text-3xl font-semibold leading-snug tracking-normal text-blue-700 antialiased">
                     Iniciar Sesión
                 </h3>
             </div>
@@ -28,7 +29,7 @@
             </div>
             <div class="p-6 pt-0">
                 <button @click="handleLogin" :disabled="isLoading" data-ripple-light="true" type="button"
-                    class="block w-full select-none rounded-lg bg-gradient-to-tr from-purple-400 via-pink-500 to-red-500 bg-clip-border text-white shadow-lg shadow-purple-500/40 py-3 px-6 text-center align-middle font-sans text-xs font-bold uppercase transition-all hover:shadow-lg hover:shadow-purple-800/40 active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none">
+                    class="block w-full select-none rounded-lg bg-gradient-to-tr from-blue-400 via-blue-500 to-blue-600 bg-clip-border text-white shadow-lg shadow-blue-500/40 py-3 px-6 text-center align-middle font-sans text-xs font-bold uppercase transition-all hover:shadow-lg hover:shadow-blue-800/40 active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none">
                     {{ isLoading ? 'Procesando...' : 'Iniciar Sesión' }}
                 </button>
 
