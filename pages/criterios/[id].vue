@@ -103,7 +103,7 @@ const cargarCriterio = async () => {
         form.value.encuestaNombre = response?.encuestum?.nombre
         form.value.encuesta = response.encuestaId// Asegúrate de que el ID de la encuesta esté asignado
     } catch (error) {
-        toast.error(`Error al cargar el criterio: ${error.message}`);
+        toast.error(`Error al cargar el criterio: ${error.response._data.message}`);
     }
 };
 
@@ -150,7 +150,7 @@ const handleSubmit = async () => {
         toast.success("Criterio editado exitosamente.");
         router.back(); // Redirige a la página anterior
     } catch (error) {
-        toast.error(`Error al editar el criterio: ${error.message}`);
+        toast.error(`Error al editar el criterio: ${error.response._data.message}`);
     } finally {
         isLoading.value = false; // Desactivar el estado de carga
     }
